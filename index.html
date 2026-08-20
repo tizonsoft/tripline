@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trip Timeline — turn your itinerary into a printable travel plan</title>
+<meta name="description" content="Upload a trip itinerary spreadsheet and get a beautiful, phone-friendly, printable day-by-day timeline. Runs entirely in your browser.">
+<meta name="theme-color" content="#0ea37e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🧭 <span>Trip <span class="brand-mint">Timeline</span></span></div>
+  <div class="topbar-actions" id="topbarActions" hidden>
+    <button id="btnNewFile" class="icon-btn" title="Load a different file" aria-label="Load a different file">📂</button>
+    <button id="btnPrint" class="btn btn-primary" title="Print or save as PDF">🖨️ <span class="btn-label">Save as PDF</span></button>
+  </div>
+</header>
+
+<main id="app">
+
+  <section id="view-upload" class="view">
+    <div class="upload-card">
+      <h1>Turn your trip spreadsheet into a beautiful <span class="accent-mint">timeline</span></h1>
+      <p class="subtitle">
+        Drop in an Excel file with an <strong>Itinerary</strong> tab
+        (<code>Date</code>, <code>Day</code>, <code>Accommodations</code>, <code>Activities</code>, <code>Notes</code>)
+        and an optional <strong>Resources</strong> tab of links. Get a phone-friendly day-by-day plan you can print or save as a PDF.
+      </p>
+      <p class="privacy-note">🔒 Nothing is uploaded or stored anywhere — read directly in your browser, forgotten when you close the tab</p>
+
+      <label id="dropzone" for="fileInput" class="dropzone">
+        <div class="dz-icon">📄</div>
+        <div class="dz-text">
+          <strong>Tap to choose a file</strong>
+          <span>or drag &amp; drop your .xlsx here</span>
+        </div>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" hidden>
+      </label>
+
+      <button id="btnSample" class="btn btn-ghost btn-block">✨ Try it with a sample itinerary</button>
+
+      <div class="format-help">
+        <h2>Expected format</h2>
+        <p class="format-caption">Sheet 1 &mdash; <strong>Itinerary</strong>: one row starts each day, extra rows underneath add more activities to that same day. A blank row separates days.</p>
+        <div class="format-table" role="table" aria-label="Example itinerary format">
+          <div class="ft-row ft-head" role="row">
+            <span role="columnheader">Date</span><span role="columnheader">Day</span><span role="columnheader">Accommodations</span><span role="columnheader">Activities</span><span role="columnheader">Notes</span>
+          </div>
+          <div class="ft-row" role="row"><span>26 Aug</span><span>Wed</span><span>Hotel Rias Baixas</span><span>Arrive, drive south</span><span>Flight lands evening</span></div>
+          <div class="ft-row ft-continued" role="row"><span></span><span></span><span>Meis</span><span>Stop in Padrón for dinner</span><span></span></div>
+        </div>
+        <p class="format-caption">Sheet 2 &mdash; <strong>Resources</strong> (optional): a title row followed by link rows, one group per topic (e.g. a region or hotel).</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-trip" class="view" hidden>
+    <div class="trip-hero">
+      <h1 id="tripTitle">Trip</h1>
+      <p id="tripSubtitle" class="trip-subtitle"></p>
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-tab="itinerary" type="button">🗓️ Itinerary</button>
+        <button class="tab" data-tab="resources" id="tabResourcesBtn" type="button" hidden>🔗 Resources</button>
+      </nav>
+    </div>
+
+    <div id="panel-itinerary" class="panel active">
+      <ol class="timeline" id="timeline" aria-label="Day by day timeline"></ol>
+    </div>
+
+    <div id="panel-resources" class="panel" hidden>
+      <div class="resources" id="resources"></div>
+    </div>
+  </section>
+
+</main>
+
+<button id="fabPrint" class="fab-print" hidden title="Print or save as PDF">🖨️</button>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<footer class="app-footer">
+  <p>Runs 100% locally in your browser. Nothing is uploaded, saved, or shared.</p>
+</footer>
+
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
